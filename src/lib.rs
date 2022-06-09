@@ -66,7 +66,16 @@ impl State {
             }
         }
 
-        let resize = image::imageops::resize(&buffer, 256, 256, image::imageops::FilterType::Nearest);
+        let factor: f32;
+        if x >= y {
+            factor = 300.0 / x as f32;
+        } else {
+            factor = 300.0 / y as f32;
+        };
+
+        let x_resize: u32 = ( x as f32 * factor).floor() as u32;
+        let y_resize: u32 = ( y as f32 * factor).floor() as u32;
+        let resize = image::imageops::resize(&buffer, x_resize, y_resize, image::imageops::FilterType::Nearest);
 
         resize.save(name).unwrap();
     }
